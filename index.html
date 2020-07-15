@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+	#canvas,#canvas2{
+		position:absolute
+	}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<canvas id="canvas2"></canvas>
+</body>
+<script>
+function CreateBezierPoints(anchorpoints, pointsAmount) {
+    var points = [];
+    for (var i = 0; i < pointsAmount; i++) {
+        var point = MultiPointBezier(anchorpoints, i / pointsAmount);
+        points.push(point);
+    }
+    return points;
+}
+function MultiPointBezier(points, t) {
+    var len = points.length;
+    var x = 0,
+    y = 0;
+    var erxiangshi = function(start, end) {
+        var cs = 1,
+        bcs = 1;
+        while (end > 0) {
+            cs *= start;
+            bcs *= end;
+            start--;
+            end--;
+        }
+        return (cs / bcs);
+    };
+    for (var i = 0; i < len; i++) {
+        var point = points[i];
+        x += point.x * Math.pow((1 - t), (len - 1 - i)) * Math.pow(t, i) * (erxiangshi(len - 1, i));
+        y += point.y * Math.pow((1 - t), (len - 1 - i)) * Math.pow(t, i) * (erxiangshi(len - 1, i));
+    }
+    return {
+        x: x,
+        y: y
+    };
+}
+var points = [
+	{x:10,y:10},
+	{x:20,y:12},
+	{x:30,y:20},
+	{x:40,y:30},
+	{x:50,y:50},
+	{x:60,y:10},
+	{x:70,y:14},
+	{x:80,y:40},
+	{x:90,y:55},
+	{x:100,y:100},
+	{x:110,y:130},
+	{x:120,y:150},
+	{x:130,y:110},
+	{x:140,y:120},
+	{x:150,y:180}
+]
+CreateBezierPoints();
+function load(){
+	var canvas = document.getElementById('canvas')
+	var ctx = canvas.getContext('2d');
+	points.forEach((u,i)=>{
+		i===0 && ctx.moveTo(u.x,u.y)
+		i!==0 && ctx.lineTo(u.x,u.y)
+	})
+	ctx.strokeStyle="black";
+	ctx.stroke();
+	
+	var canvas2 = document.getElementById('canvas2')
+	var ctx2 = canvas2.getContext('2d');
+	for(var i=1;i<points.length;i++){
+		const p1 = points[i-1];
+		const p4 = points[i];
+		const p2 = {x:(p4.x-p1.x)/2+p1.x,y:p1.y}
+		const p3 = {x:(p4.x-p1.x)/2+p1.x,y:p4.y}
+		ctx2.moveTo(p1.x,p1.y)
+		ctx2.bezierCurveTo(p2.x, p2.y,p3.x, p3.y,p4.x, p4.y)
+	}
+	ctx2.strokeStyle="black";
+	ctx2.stroke();
+}
+window.onload=load()
+</script>
+</html>

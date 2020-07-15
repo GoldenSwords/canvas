@@ -12,8 +12,7 @@
 <canvas id="canvas"></canvas>
 <canvas id="canvas2"></canvas>
 <textarea id="val" value="111" rows="40" cols="40" onblur="dod()">
-[{"x":10,"y":10},{"x":20,"y":12},{"x":30,"y":20},{"x":40,"y":30},{"x":50,"y":50},{"x":60,"y":10},{"x":70,"y":14},{"x":80,"y":40},{"x":90,"y":55},{"x":100,"y":100},{"x":110,"y":130},{"x":120,"y":150},{"x":130,"y":110},{"x":140,"y":120},{"x":150,"y":180}]
-</textarea>
+[{"x":10,"y":180},{"x":20,"y":120},{"x":30,"y":200},{"x":40,"y":300},{"x":50,"y":150},{"x":60,"y":110},{"x":70,"y":140},{"x":80,"y":140},{"x":90,"y":155},{"x":100,"y":100},{"x":110,"y":130},{"x":120,"y":150},{"x":130,"y":110},{"x":140,"y":120},{"x":150,"y":180}]</textarea>
 </body>
 <script>
 function CreateBezierPoints(anchorpoints, pointsAmount) {
@@ -50,15 +49,15 @@ function MultiPointBezier(points, t) {
     };
 }
 var points = [
-	{x:10,y:10},
-	{x:20,y:12},
-	{x:30,y:20},
-	{x:40,y:30},
-	{x:50,y:50},
-	{x:60,y:10},
-	{x:70,y:14},
-	{x:80,y:40},
-	{x:90,y:55},
+	{x:10,y:180},
+	{x:20,y:120},
+	{x:30,y:200},
+	{x:40,y:300},
+	{x:50,y:150},
+	{x:60,y:110},
+	{x:70,y:140},
+	{x:80,y:140},
+	{x:90,y:155},
 	{x:100,y:100},
 	{x:110,y:130},
 	{x:120,y:150},
@@ -72,7 +71,7 @@ function load(){
 	var canvas = document.getElementById('canvas')
 	var canvas2 = document.getElementById('canvas2')
 	canvas.width = canvas2.width = points.length * 10
-	canvas.height = canvas2.height = points.sort((a,b)=>b.y-a.y)[0].y
+	canvas.height = canvas2.height = JSON.parse(JSON.stringify(points)).sort((a,b)=>b.y-a.y)[0].y
 	var ctx = canvas.getContext('2d');
 	ctx.clearRect(0,0,canvas.width,canvas.height)
 	points.forEach((u,i)=>{
